@@ -1,15 +1,15 @@
 def solution(name, yearning, photo):
     answer = []
-    
-    total = 0
-    
-    for element in photo:
-        for i in element:
-            if i not in name:
+    dic = {}
+    for i in range(len(name)):
+        dic[name[i]] = yearning[i]
+        
+    for data in photo:
+        score = 0
+        for i in data:
+            if i not in dic:
                 continue
-            target = name.index(i)
-            total+=yearning[target]
-        answer.append(total)
-        total = 0
+            score+=dic[i]
+        answer.append(score)
             
     return answer
