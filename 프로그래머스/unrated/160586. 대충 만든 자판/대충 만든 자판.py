@@ -1,23 +1,26 @@
+import collections
+
 def solution(keymap, targets):
     answer = []
-    dic = {}
-    for key in keymap:
-        for i in range(len(key)):
-            if key[i] not in dic:
-                dic[key[i]] = i+1
+    dic = collections.defaultdict(int)
+    
+    for data in keymap:
+        for i in range(len(data)):
+            if data[i] not in dic:
+                dic[data[i]] = i+1
             else:
-                if dic[key[i]] > i+1:
-                    dic[key[i]] = i+1
+                if i+1 < dic[data[i]]:
+                    dic[data[i]] = i+1
     for data in targets:
-        result = 0
-        flag = 1
+        cnt = 0
         for i in data:
             if i not in dic:
-                answer.append(-1)
-                flag = 0
+                cnt = 0
                 break
             else:
-                result+=dic[i]
-        if flag ==1:
-            answer.append(result)
+                cnt+=dic[i]
+        if cnt == 0:
+            answer.append(-1)
+            continue
+        answer.append(cnt)
     return answer
