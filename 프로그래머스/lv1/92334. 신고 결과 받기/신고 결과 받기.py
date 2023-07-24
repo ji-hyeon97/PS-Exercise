@@ -3,20 +3,22 @@ import collections
 def solution(id_list, report, k):
     answer = []
     report = list(set(report))
-    
     reportHash = collections.defaultdict(list)
-    stopped = collections.defaultdict(int)
+    stop = collections.defaultdict(int)
     
     for i in report:
-        data = i.split(" ")
-        reportHash[data[0]].append(data[1])
-        stopped[data[1]]+=1
-        
+        first, second = i.split(" ")
+        reportHash[first].append(second)
+    
     for i in id_list:
-        mail = 0
-        for j in reportHash[i]:
-            if stopped[j] >=k:
-                mail+=1
-        answer.append(mail)
-
+        for target in reportHash[i]:
+            stop[target] +=1
+    
+    for i in id_list:
+        cnt = 0
+        for target in reportHash[i]:
+            if stop[target] >= k:
+                cnt+=1
+        answer.append(cnt)
+    
     return answer
