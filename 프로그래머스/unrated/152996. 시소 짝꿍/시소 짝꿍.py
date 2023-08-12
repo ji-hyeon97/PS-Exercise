@@ -27,11 +27,4 @@ def solution(weights):
             temp+=dic[a]*dic[b]
     temp = temp//2
     answer+=temp
-                        
-                        
-                        
-                            
-                    
-                    
-    
     return answer
