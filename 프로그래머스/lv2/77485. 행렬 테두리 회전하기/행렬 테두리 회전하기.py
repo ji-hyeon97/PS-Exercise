@@ -1,31 +1,47 @@
-import heapq
+import numpy as np
+
+def to_num(x, y, columns):
+    return y * columns + x
+
+def index_list(x1, y1, x2, y2, columns):
+    y1, x1, y2, x2 = x1-1, y1-1, x2-1, y2-1
+    return [to_num(x, y1, columns) for x in range(x1, x2 + 1)] + [to_num(x2, y, columns) for y in range(y1+1, y2+1)] + [to_num(x, y2, columns) for x in range(x2-1, x1-1, -1)] + [to_num(x1, y, columns) for y in range(y2-1, y1, -1)]
+
+# def to_list(l, indices, nums)
+
+def print_array(array, rows, columns):
+    for row in range(rows):
+        print(array[row * columns : (row + 1) *columns])
+
 def solution(rows, columns, queries):
     answer = []
-    graph = []
-    temp = []
-    for i in range(1,rows*columns+1):
-        temp.append(i)
-        if i%columns==0:
-            graph.append(temp)
-            temp = []
-    for x1,y1,x2,y2 in queries:
-        heap = []
-        x1-=1
-        y1-=1
-        x2-=1
-        y2-=1
-        target = graph[x1][y1]
-        for i in range(y1,y2):
-            graph[x1][i+1],target = target,graph[x1][i+1]
-            heapq.heappush(heap,target)
-        for i in range(x1,x2):
-            graph[i+1][y2],target = target,graph[i+1][y2]
-            heapq.heappush(heap,target)
-        for i in range(y2,y1,-1):
-            graph[x2][i-1],target = target,graph[x2][i-1]
-            heapq.heappush(heap,target)
-        for i in range(x2,x1,-1):
-            graph[i-1][y1],target = target,graph[i-1][y1]
-            heapq.heappush(heap,target)
-        answer.append(heap[0])
+    
+    array = np.array([i for i in range(1, rows*columns+1)])
+    
+    # print_array(array, rows, columns)
+    
+    for query in queries:
+        
+        x1, y1, x2, y2 = query
+        
+        indices = index_list(x1, y1, x2, y2, columns)
+        
+        # print(indices)
+        
+        num = array[indices]
+        
+        replace_num = num[:-1]
+        replace_num = np.append([num[-1]], replace_num)
+        
+        i = 0
+        for idx in indices:
+            array[idx] = replace_num[i]
+            i += 1
+        
+        # print_array(array, rows, columns)
+        
+        answer.append(int(np.min(num)))
+        
+        # print(f'answer\n{answer}')
+        
     return answer
