@@ -1,23 +1,19 @@
-def solution(n):
-    n = str(n)
-    n=list(map(int, n))
-    n.reverse()
-    d=len(n)-1
-
-    count=0
-    for i in range(d):
-        if n[i]>=6:
-            count=count+10-n[i]
-            n[i+1]=n[i+1]+1
-        elif n[i]==5:
-            count=count+5
-            if n[i+1]>=5:
-                n[i+1]=n[i+1]+1
-        else:
-            count=count+n[i]
-    if n[-1]>=6:
-        count=count+10-n[-1]+1
-    else:
-        count=count+n[-1]
-
-    return count
+def solution(storey):
+    answer = 0
+    while True:
+        if storey == 0:
+            break
+        move = storey%10
+        storey = storey//10
+        if move<5:
+            answer+=move
+        if move>5:
+            answer+=(10-move)
+            storey+=1
+        if move==5:
+            if storey%10>=5:
+                answer+=move
+                storey+=1
+            else:
+                answer+=move
+    return answer
