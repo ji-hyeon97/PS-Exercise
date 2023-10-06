@@ -1,17 +1,18 @@
 import sys
 
 n = int(sys.stdin.readline().rstrip())
-students = list(map(int, sys.stdin.readline().split()))
-b, c = map(int, sys.stdin.readline().split())
-answer = 0
+student = list(map(int,sys.stdin.readline().split()))
+main, sub = map(int,sys.stdin.readline().split())
 
-for i in students:
-    i -= b
-    answer += 1
-    if i <= 0:
-        continue
-    if i % c == 0:
-        answer += i // c
+data = []
+for i in student:
+  data.append(i-main)
+
+answer = n
+for i in data:
+  if i>0:
+    if i%sub == 0:
+      answer+=int(i//sub)
     else:
-        answer += i // c + 1
+      answer+=int(i//sub)+1
 print(answer)
