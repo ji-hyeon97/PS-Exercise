@@ -1,28 +1,43 @@
 import sys
-from collections import deque
-from itertools import combinations
 
-n,m = map(int,sys.stdin.readline().split())
+n, m = map(int, sys.stdin.readline().split())
 graph = []
+
 for _ in range(n):
-  graph.append(list(map(int,sys.stdin.readline().split())))
-home = deque()
-chicken = deque()
+    data = list(map(int, sys.stdin.readline().split()))
+    graph.append(data)
 
+home = []
+chicken = []
 for i in range(n):
-  for j in range(n):
-    if graph[i][j] == 1:
-      home.append((i,j))
-    if graph[i][j] == 2:
-      chicken.append((i,j))
+    for j in range(n):
+        if graph[i][j] == 1:
+            home.append((i, j))
+        if graph[i][j] == 2:
+            chicken.append((i, j))
 
-answer = 999999
-for chi in combinations(chicken,m):
-  path = 0
-  for h in home:
-    target = 99999
-    for i in range(m):
-      target = min(target,abs(h[0]-chi[i][0])+abs(h[1]-chi[i][1]))
-    path+=target
-  answer=min(answer,path)
+answer = int(1e9)
+
+
+def cal(list):
+    distance = 0
+    for a, b in home:
+        temp = int(1e9)
+        for c, d in list:
+            temp = min(temp, abs(a - c) + abs(b - d))
+        distance += temp
+    return distance
+
+
+def recur(depth, list):
+    global answer
+    if depth == len(chicken):
+        if len(list) == m:
+            answer = min(answer, cal(list))
+        return
+    recur(depth + 1, list)
+    recur(depth + 1, list + [chicken[depth]])
+
+
+recur(0, [])
 print(answer)
