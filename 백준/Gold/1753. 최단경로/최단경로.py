@@ -1,28 +1,29 @@
 import sys
 import heapq
 
-v, e = map(int, sys.stdin.readline().split())
+V, e = map(int, sys.stdin.readline().split())
 start = int(sys.stdin.readline().rstrip())
-graph = [[] for _ in range(v + 1)]
+
+graph = [[] for _ in range(V + 1)]
+dist = [int(1e9) for _ in range(V + 1)]
+data = []
+dist[start] = 0
 
 for _ in range(e):
-    a, b, c = map(int, sys.stdin.readline().split())
-    graph[a].append([b, c])
+    u, v, w = map(int, sys.stdin.readline().split())
+    graph[u].append([v, w])
 
-dist = [1e9 for _ in range(v + 1)]
-dist[start] = 0
-queue = []
-heapq.heappush(queue, [0, start])
+heapq.heappush(data, [0, start])
 
-while queue:
-    w, node = heapq.heappop(queue)
+while data:
+    d, node = heapq.heappop(data)
     for a, b in graph[node]:
         if dist[a] > dist[node] + b:
             dist[a] = dist[node] + b
-            heapq.heappush(queue, [dist[a], a])
+            heapq.heappush(data, [dist[a], a])
 
-for i in range(1, len(dist)):
-    if dist[i] == 1e9:
+for i in range(1, V+1):
+    if dist[i] == int(1e9):
         print("INF")
     else:
         print(dist[i])
