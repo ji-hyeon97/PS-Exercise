@@ -1,10 +1,10 @@
 import sys
 from collections import deque
 
-queue = deque()
-
 n, m = map(int, sys.stdin.readline().split())
 graph = []
+queue = deque()
+
 for _ in range(n):
     data = list(map(str, sys.stdin.readline().rstrip()))
     graph.append(data)
@@ -29,9 +29,10 @@ def bfs():
             ny = y + dy[i]
 
             if 0 <= nx < n and 0 <= ny < m:
-                if graph[nx][ny] == '0' and check[nx][ny][jump] == 0:
-                    check[nx][ny][jump] = check[x][y][jump] + 1
-                    queue.append((nx, ny, jump))
+                if graph[nx][ny] == '0':
+                    if check[nx][ny][jump] == 0:
+                        check[nx][ny][jump] = check[x][y][jump] + 1
+                        queue.append((nx, ny, jump))
                 if graph[nx][ny] == '1' and jump == 0:
                     check[nx][ny][jump + 1] = check[x][y][jump] + 1
                     queue.append((nx, ny, jump + 1))
