@@ -45,17 +45,17 @@ def bfs():
     safe = max(safe, temp)
 
 
-def makeWall(count):
+def makeWall(start, count):
     if count == 3:
         bfs()
         return
-    for i in range(n):
+    for i in range(start, n):
         for j in range(m):
             if graph[i][j] == 0:
                 graph[i][j] = 1
-                makeWall(count + 1)
+                makeWall(i, count + 1)
                 graph[i][j] = 0
 
 
-makeWall(0)
+makeWall(0, 0)
 print(safe)
