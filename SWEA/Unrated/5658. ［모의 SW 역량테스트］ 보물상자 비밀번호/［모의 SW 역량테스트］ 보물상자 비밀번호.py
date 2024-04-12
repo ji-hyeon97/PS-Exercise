@@ -1,39 +1,38 @@
 from collections import deque
 
-T = int(input())
+T = int(input().rstrip())
 
-for test_case in range(1, T + 1):
-    n,k = map(int,input().split())
-    data = list(map(str,input().rstrip()))
+for t in range(1, T + 1):
+    n, k = map(int, input().split())
+    data = input().rstrip()
     queue = deque(data)
-    dic = {}
-    for i in range(10):
-        dic[str(i)] = i
-    dic['A'] = 10
-    dic['B'] = 11
-    dic['C'] = 12
-    dic['D'] = 13
-    dic['E'] = 14
-    dic['F'] = 15
-    answer = []
-    length = n//4
+    length = n // 4
+    possible = []
+    index = 0
+    while True:
+        if index == length:
+            break
+        temp = ""
+        for i in range(len(queue)):
+            temp += queue[i]
+            if len(temp) == length:
+                possible.append(temp)
+                temp = ""
 
-    for _ in range(len(data)):
-        for i in range(0,n,length):
-            temp = ""
-            for j in range(length):
-                temp+=queue[i+j]
-            answer.append(temp)
-        a = queue.popleft()
-        queue.append(a)
-
-    answer = list(set(answer))
+        a = queue.pop()
+        queue.appendleft(a)
+        index += 1
+    dic = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'A': 10, 'B': 11, 'C': 12,
+           'D': 13,
+           'E': 14, 'F': 15}
 
     result = []
-    for data in answer:
+    for data in possible:
         temp = 0
-        for i in range(len(data)):
-            temp+=dic[data[i]]* (16**(len(data)-(i+1)))
+        for i in range(length):
+            temp += (16 ** i) * dic[data[length - i - 1]]
         result.append(temp)
+    result = list(set(result))
     result.sort(reverse=True)
-    print("#"+str(test_case)+" "+str(result[k-1]))
+
+    print("#" + str(t) + " " + str(result[k - 1]))
